@@ -16,7 +16,6 @@ func hello(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	fmt.Println(req.URL.Path)
 	fmt.Fprint(res, "Hello world")
-
 }
 
 func main() {
@@ -27,7 +26,11 @@ func main() {
 	// 監聽 GET /isBeep 路徑。
 	router.GET("/isBeep", func(c *gin.Context) {
 		c.String(200, strconv.FormatBool(beep_state))
+	})
+
+	router.GET("/setBeep", func(c *gin.Context) {
 		beep_state = false
+		c.String(200, "OK")
 	})
 
 	router.GET("/questBeep", func(c *gin.Context) {
