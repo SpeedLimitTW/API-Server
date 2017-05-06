@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,17 +20,19 @@ func hello(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	beep_state = true
 
 	// 建立 Gin 引擎。
 	router := gin.Default()
 
-	// 監聽 GET /path 路徑。
-	router.GET("/path", func(c *gin.Context) {
-		// 回傳 200 OK 的 JSON 資料：{ "test": "wow!!" }。
-		c.JSON(200, gin.H{
-			"test": "wow!!",
-		})
+	// 監聽 GET /isBeep 路徑。
+	router.GET("/isBeep", func(c *gin.Context) {
+		c.String(200, strconv.FormatBool(beep_state))
+		beep_state = false
+	})
+
+	router.GET("/questBeep", func(c *gin.Context) {
+		beep_state = true
+		c.String(200, "setBeepRequestPendding")
 	})
 
 	// 在 :8080 啟動伺服器。
